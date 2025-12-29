@@ -24,14 +24,6 @@ def normalize_url(url):
     # Parse the URL
     parsed = urlparse(url)
     
-    # Check if it's already in the correct format
-    if '/styles/no_compression/public/' in url:
-        # Just ensure it ends with .webp
-        if not url.endswith('.webp'):
-            # Remove any existing extension and add .webp
-            url = re.sub(r'\.(jpg|jpeg|png|webp)$', '', url, flags=re.IGNORECASE) + '.webp'
-        return url
-    
     # Extract the path part after /sites/default/files/
     if '/sites/default/files/' not in parsed.path:
         # This might be a different type of URL, try to handle it
@@ -44,13 +36,24 @@ def normalize_url(url):
     # Remove any query parameters or fragments
     path_after = path_after.split('?')[0].split('#')[0]
     
-    # Ensure it ends with .webp
-    if not path_after.endswith('.webp'):
-        # Remove existing image extension and add .webp
-        path_after = re.sub(r'\.(jpg|jpeg|png|webp)$', '', path_after, flags=re.IGNORECASE) + '.webp'
+    # Remove the /styles/no_compression/public/ prefix if it exists
+    if path_after.startswith('styles/no_compression/public/'):
+        path_after = path_after[len('styles/no_compression/public/'):]
     
-    # Construct the normalized URL
+    # Ensure it ends with .jpg.webp (not just .webp)
+    if path_after.endswith('.jpg.webp'):
+        # Already in correct format
+        pass
+    elif path_after.endswith('.webp'):
+        # Change .webp to .jpg.webp
+        path_after = path_after[:-5] + '.jpg.webp'  # Remove .webp and add .jpg.webp
+    else:
+        # Remove existing image extension and add .jpg.webp
+        path_after = re.sub(r'\.(jpg|jpeg|png|webp)$', '', path_after, flags=re.IGNORECASE) + '.jpg.webp'
+    
+    # Always construct with the /styles/no_compression/public/ prefix
     normalized = f"https://gameinformer.com/sites/default/files/styles/no_compression/public/{path_after}"
+    
     return normalized
 
 
