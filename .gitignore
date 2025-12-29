@@ -1,0 +1,4 @@
+.venv/
+urls.json
+output/
+.mypy_cache/
