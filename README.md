@@ -4,7 +4,7 @@ Scripts to download Game Informer magazine cover images from the covers gallery 
 
 ## Setup
 
-1. Install Python dependencies:
+1. Install Python dependencies (you should probably make a venv):
 ```bash
 pip install -r requirements.txt
 ```
@@ -23,11 +23,3 @@ The script will:
    `https://gameinformer.com/sites/default/files/styles/no_compression/public/.../...jpg.webp`
 4. Save the normalized URLs to `urls.json`
 5. Download all images to the `output/` folder (skipping files that already exist)
-
-## Files
-
-- `download_covers.py` - Main script to scrape and download covers
-- `urls.json` - List of normalized cover image URLs
-- `notes.js` - Manual browser console commands used during development
-- `output/` - Directory where downloaded images are saved
-
